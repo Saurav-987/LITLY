@@ -212,6 +212,24 @@
             font-size: 12px;
         }
 
+        .read-button {
+            width: 100%;
+            margin-top: 12px;
+            padding: 10px 12px;
+            border: 1px solid var(--ink, #292929);
+            border-radius: 6px;
+            background: var(--ink, #292929);
+            color: #ffffff;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .read-button:hover {
+            background: #55514a;
+        }
+
         /* ==============================
            BOOK ACTIONS
         ============================== */
@@ -537,7 +555,7 @@
             width: 100%;
             height: 100%;
             max-height: none;
-            overflow: auto;
+            overflow: hidden;
             padding: clamp(28px, 6vw, 80px);
             border-radius: 0;
             background: var(--paper);
@@ -562,11 +580,16 @@
             display: grid;
             grid-template-columns: minmax(170px, 250px) minmax(0, 720px);
             gap: clamp(28px, 6vw, 90px);
-            align-items: start;
+            align-items: stretch;
             justify-content: center;
             max-width: 1080px;
+            height: calc(100vh - 110px);
             margin: 0 auto;
             padding-top: 30px;
+        }
+
+        .reader-book-panel {
+            align-self: start;
         }
 
         .reader-cover {
@@ -578,7 +601,10 @@
         }
 
         .reader-page {
-            padding: 18px 8px 8px;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 0 8px 8px;
         }
 
         .reader-label {
@@ -595,6 +621,13 @@
             color: var(--ink);
             font-size: 38px;
             line-height: 1.05;
+        }
+
+        .reader-book-panel h2 {
+            margin-top: 10px;
+            color: var(--ink);
+            font-size: 28px;
+            line-height: 1.08;
         }
 
         .reader-author {
@@ -623,14 +656,71 @@
         }
 
         .reader-content {
-            min-height: 300px;
-            margin-top: 36px;
+            min-height: 0;
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 22px;
             color: #384353;
             font-size: clamp(20px, 2vw, 27px);
             line-height: 1.8;
         }
 
+        .reader-pdf {
+            width: 100%;
+            height: auto;
+            min-height: 560px;
+            border: 1px solid var(--line);
+            background: #ffffff;
+            object-fit: contain;
+        }
+
+        .reader-shell.pdf-reader .reader-content {
+            height: auto;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 34px clamp(24px, 5vw, 70px);
+            border: 1px solid var(--line);
+            background: #f5edda;
+        }
+
+        .reader-pdf-frame {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reader-pdf-text {
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(22px, 2vw, 30px);
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .reader-pdf-canvas {
+            display: none;
+            width: 110%;
+            max-width: none;
+            height: auto;
+            margin-left: -5%;
+            background: #f5edda;
+            image-rendering: auto;
+            transform-origin: top center;
+        }
+
+        .reader-shell.pdf-reader .reader-layout {
+            grid-template-columns: minmax(150px, 190px) minmax(0, 1000px);
+            max-width: 1280px;
+            gap: clamp(28px, 4vw, 64px);
+        }
+
+        .reader-shell.pdf-reader .reader-content {
+            margin-top: 0;
+        }
+
         .reader-footer {
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -672,12 +762,45 @@
             }
 
             .reader-layout {
-                grid-template-columns: 100px minmax(0, 1fr);
-                gap: 20px;
+                grid-template-columns: minmax(0, 1fr);
+                gap: 22px;
+                height: calc(100vh - 66px);
+            }
+
+            .reader-shell.pdf-reader .reader-layout {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 14px;
+            }
+
+            .reader-book-panel {
+                display: block;
+            }
+
+            .reader-book-panel .reader-cover {
+                width: 86px;
+            }
+
+            .reader-book-panel h2 {
+                font-size: 24px;
+            }
+
+            .reader-shell.pdf-reader .reader-pdf {
+                min-height: 420px;
+            }
+
+            .reader-shell.pdf-reader .reader-content {
+                height: 58vh;
+                min-height: 360px;
+                padding: 24px 20px;
+            }
+
+            .reader-pdf-text {
+                font-size: 21px;
+                line-height: 1.7;
             }
 
             .reader-page h2 {
-                font-size: 26px;
+                font-size: 24px;
             }
 
             .reader-content {
@@ -690,23 +813,78 @@
                 align-items: flex-start;
                 flex-direction: column;
             }
+
+            .reader-controls {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .reader-controls button {
+                min-height: 42px;
+                flex: 1 1 auto;
+            }
         }
 
         @media (max-width: 750px) {
             .header {
                 padding: 16px 20px;
+                gap: 14px;
             }
 
             main {
                 padding: 34px 20px 60px;
             }
+
+            .book-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 28px 14px;
+            }
+
+            .book-title {
+                font-size: 15px;
+            }
+
+            .book-actions {
+                opacity: 1;
+            }
+
+            .action-btn {
+                width: 38px;
+                height: 38px;
+            }
+
+            .genre-btn {
+                min-height: 44px;
+            }
         }
 
         @media (max-width: 450px) {
+            .header {
+                padding: 14px 16px 18px;
+            }
+
             .hero {
                 min-height: 190px;
-                margin: 24px 16px 0;
-                padding: 30px 20px;
+                margin: 24px 12px 0;
+                padding: 28px 18px;
+                box-shadow: 6px 6px 0 var(--sky);
+            }
+
+            .reader-panel {
+                padding: 18px 16px;
+            }
+
+            .reader-layout {
+                grid-template-columns: 64px minmax(0, 1fr);
+                gap: 14px;
+            }
+
+            .reader-page {
+                padding-top: 8px;
+            }
+
+            .reader-content {
+                min-height: 220px;
             }
         }
 
@@ -898,15 +1076,17 @@
         <div class="reader-panel">
             <button class="reader-close" type="button" onclick="closeReader()" aria-label="Close reader">&times;</button>
             <div class="reader-layout">
-                <img class="reader-cover" id="readerCover" alt="">
-                <article class="reader-page">
+                <aside class="reader-book-panel">
+                    <img class="reader-cover" id="readerCover" alt="">
                     <div class="reader-label">Now reading</div>
                     <h2 id="readerTitle"></h2>
                     <div class="reader-author" id="readerAuthor"></div>
                     <p class="reader-description" id="readerDescription"></p>
+                </aside>
+                <article class="reader-page">
                     <div class="reader-chapter" id="readerChapter"></div>
                     <div class="reader-content" id="readerContent"></div>
-                    <div class="reader-footer">
+                    <div class="reader-footer" id="readerFooter">
                         <span class="reader-page-number" id="readerPageNumber"></span>
                         <div class="reader-controls">
                             <button type="button" onclick="changeReaderFont(-1)" aria-label="Decrease text size">A-</button>
@@ -925,6 +1105,7 @@
     </footer>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="books.js"></script>
     <script>
 
@@ -1028,6 +1209,14 @@
                         <div class="book-author">
                             ${escapeHTML(book.author)}
                         </div>
+
+                        <button
+                            class="read-button"
+                            type="button"
+                            onclick="event.stopPropagation(); openBook(${book.id})"
+                        >
+                            Read book
+                        </button>
 
                     </div>
 
@@ -1351,6 +1540,7 @@
         let readerChapters = [];
         let readerFontSize = Number(storage.get("litly_reader_font")) || 20;
         let activeReaderBookId = null;
+        let activeReaderPdf = null;
 
         function openBook(id) {
 
@@ -1358,6 +1548,28 @@
                 books.find(book => book.id === id);
 
             if (!book) return;
+
+            activeReaderPdf = book.pdf || null;
+
+            if (activeReaderPdf) {
+                document.getElementById("readerCover").src = book.image;
+                document.getElementById("readerCover").alt = `${book.title} cover`;
+                document.getElementById("readerTitle").textContent = book.title;
+                document.getElementById("readerAuthor").textContent = `By ${book.author}`;
+                document.getElementById("readerDescription").textContent = book.description || "";
+                document.getElementById("readerChapter").textContent = "Full book";
+                document.getElementById("readerContent").innerHTML =
+                    '<div class="reader-pdf-frame">' +
+                    '<canvas class="reader-pdf-canvas" id="readerPdfCanvas"></canvas>' +
+                    '</div>';
+                document.getElementById("readerFooter").hidden = false;
+                readerPageIndex = Number(storage.get(`litly_progress_${book.id}`)) || 0;
+                document.getElementById("readerShell").classList.add("pdf-reader");
+                document.getElementById("readerShell").hidden = false;
+                document.body.style.overflow = "hidden";
+                loadPdfBook(activeReaderPdf);
+                return;
+            }
 
             readerChapters = book.chapters || [{
                 title: "Reading copy",
@@ -1377,12 +1589,19 @@
             document.getElementById("readerTitle").textContent = book.title;
             document.getElementById("readerAuthor").textContent = `By ${book.author}`;
             document.getElementById("readerDescription").textContent = book.description || "";
+            document.getElementById("readerFooter").hidden = false;
+            document.getElementById("readerShell").classList.remove("pdf-reader");
             document.getElementById("readerShell").hidden = false;
             document.body.style.overflow = "hidden";
             renderReaderPage();
         }
 
         function renderReaderPage() {
+            if (activeReaderPdf) {
+                renderPdfPage();
+                return;
+            }
+
             document.getElementById("readerContent").textContent =
                 readerPages[readerPageIndex];
             document.getElementById("readerContent").style.fontSize = `${readerFontSize}px`;
@@ -1403,6 +1622,59 @@
             }
         }
 
+        let pdfDocument = null;
+
+        async function loadPdfBook(pdfPath) {
+            if (!window.pdfjsLib) {
+                document.getElementById("readerContent").textContent = "PDF reader could not load.";
+                return;
+            }
+
+            pdfjsLib.GlobalWorkerOptions.workerSrc =
+                "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+            try {
+                pdfDocument = await pdfjsLib.getDocument(pdfPath).promise;
+                readerPageIndex = Math.min(readerPageIndex, pdfDocument.numPages - 1);
+                renderPdfPage();
+            } catch (error) {
+                document.getElementById("readerContent").textContent =
+                    "The PDF could not be opened. Run the website through a local server and try again.";
+            }
+        }
+
+        async function renderPdfPage() {
+            if (!pdfDocument) return;
+
+            try {
+                const page = await pdfDocument.getPage(readerPageIndex + 1);
+                const canvas = document.getElementById("readerPdfCanvas");
+                const containerWidth = document.getElementById("readerContent").clientWidth;
+                const baseViewport = page.getViewport({ scale: 1 });
+                const displayScale = Math.max(1, containerWidth / baseViewport.width);
+                const pixelRatio = Math.min(3, window.devicePixelRatio || 1);
+                const textZoom = readerFontSize / 20;
+                const scale = displayScale * pixelRatio;
+                const viewport = page.getViewport({ scale });
+                const context = canvas.getContext("2d");
+
+                canvas.style.display = "block";
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                canvas.style.width = "";
+                canvas.style.height = "";
+                canvas.style.transform = `scale(${textZoom})`;
+
+                await page.render({ canvasContext: context, viewport }).promise;
+                document.getElementById("readerPageNumber").textContent =
+                    `Page ${readerPageIndex + 1} of ${pdfDocument.numPages}`;
+                storage.set(`litly_progress_${activeReaderBookId}`, readerPageIndex);
+            } catch (error) {
+                document.getElementById("readerContent").textContent =
+                    "This page could not be rendered.";
+            }
+        }
+
         function changeReaderFont(step) {
             readerFontSize = Math.max(16, Math.min(32, readerFontSize + step * 2));
             storage.set("litly_reader_font", readerFontSize);
@@ -1410,6 +1682,14 @@
         }
 
         function nextReaderPage() {
+            if (activeReaderPdf) {
+                if (pdfDocument && readerPageIndex < pdfDocument.numPages - 1) {
+                    readerPageIndex++;
+                    renderPdfPage();
+                }
+                return;
+            }
+
             if (readerPageIndex < readerPages.length - 1) {
                 readerPageIndex++;
                 renderReaderPage();
@@ -1417,6 +1697,14 @@
         }
 
         function previousReaderPage() {
+            if (activeReaderPdf) {
+                if (readerPageIndex > 0) {
+                    readerPageIndex--;
+                    renderPdfPage();
+                }
+                return;
+            }
+
             if (readerPageIndex > 0) {
                 readerPageIndex--;
                 renderReaderPage();
@@ -1425,7 +1713,10 @@
 
         function closeReader() {
             document.getElementById("readerShell").hidden = true;
+            document.getElementById("readerShell").classList.remove("pdf-reader");
             document.body.style.overflow = "";
+            activeReaderPdf = null;
+            pdfDocument = null;
         }
 
         document.addEventListener("keydown", event => {
