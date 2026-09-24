@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LITLY — Stories Worth Staying Up For</title>
+
+    <style>
+        /* ==============================
+           LITLY — LIGHT ELEGANT THEME
+        ============================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background: #faf9f6;
+            color: #252525;
+            min-height: 100vh;
+        }
+
+        /* ==============================
+           TOP HEADER
+        ============================== */
+
+        .header {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 55px;
+            background: #ffffff;
+            border-bottom: 1px solid #e9e5dd;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 320px;
+            height: 42px;
+            border: 1px solid #ddd8ce;
+            border-radius: 25px;
+            background: #faf9f6;
+            padding: 0 16px;
+        }
+
+        .search-box span {
+            font-family: Arial, sans-serif;
+            margin-right: 9px;
+            color: #777;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .logo {
+            font-family: Arial, sans-serif;
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #1f1f1f;
+        }
+
+        /* ==============================
+           GENRE MENU
+        ============================== */
+
+        .genre-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #ebe7df;
+            padding: 0 45px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .genre-bar::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .genre-bar::-webkit-scrollbar-thumb {
+            background: #cfc8bb;
+            border-radius: 10px;
+        }
+
+        .genre-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            min-width: max-content;
+            height: 58px;
+        }
+
+        .genre-btn {
+            border: none;
+            background: transparent;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            transition: 0.2s;
+            padding: 18px 0;
+        }
+
+        .genre-btn:hover,
+        .genre-btn.active {
+            color: #111;
+            font-weight: 700;
+        }
+
+        /* ==============================
+           MAIN CONTENT
+        ============================== */
+
+        main {
+            max-width: 1450px;
+            margin: auto;
+            padding: 48px 55px 70px;
+        }
+
+        .section {
+            margin-bottom: 55px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 27px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .section-heading p {
+            color: #888;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        /* ==============================
+           BOOK GRID
+        ============================== */
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 28px 24px;
+        }
+
+        .book-card {
+            cursor: pointer;
+            position: relative;
+            min-width: 0;
+        }
+
+        .cover-wrapper {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            overflow: hidden;
+            background: #eeeae2;
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .book-card:hover .cover-wrapper {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .cover-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .book-info {
+            padding-top: 12px;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #252525;
+        }
+
+        .book-author {
+            margin-top: 5px;
+            color: #858585;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        /* ==============================
+           BOOK ACTIONS
+        ============================== */
+
+        .book-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .book-card:hover .book-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.92);
+            cursor: pointer;
+            font-size: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .action-btn.active {
+            background: #252525;
+            color: white;
+        }
+
+        /* ==============================
+           PAGINATION
+        ============================== */
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            border: 1px solid #d8d3c9;
+            background: white;
+            padding: 10px 17px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        .page-btn:hover {
+            background: #f0ede7;
+        }
+
+        .page-number {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* ==============================
+           SEARCH RESULT
+        ============================== */
+
+        #searchSection {
+            display: none;
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            padding: 50px;
+            text-align: center;
+            color: #888;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 1000px) {
+            .book-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .header {
+                padding: 0 30px;
+            }
+
+            main {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .header {
+                height: auto;
+                padding: 18px 20px;
+                gap: 15px;
+            }
+
+            .search-box {
+                width: 220px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px 15px;
+            }
+
+            main {
+                padding: 35px 20px;
+            }
+
+            .genre-menu {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .header {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .logo {
+                text-align: right;
+            }
+        }
+
+        :root {
+            --ink: #292929;
+            --muted: #77736b;
+            --paper: #f7f2e8;
+            --line: #ddd6c9;
+            --coral: #a8894d;
+            --lime: #d9c28b;
+            --sky: #eee7da;
+            --violet: #4a4a48;
+        }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        .header {
+            height: 78px;
+            padding: 0 max(24px, calc((100vw - 1340px) / 2));
+            background: rgba(255, 250, 243, 0.94);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .logo {
+            color: var(--ink);
+            font-size: 25px;
+            letter-spacing: 5px;
+        }
+
+        .search-box {
+            width: 300px;
+            height: 40px;
+            border: 1px solid #cfc8bc;
+            border-radius: 8px;
+            background: #ffffff;
+            box-shadow: 4px 4px 0 var(--lime);
+        }
+
+        .genre-bar {
+            padding: 0 max(24px, calc((100vw - 1340px) / 2));
+            background: var(--ink);
+            border-bottom: 0;
+        }
+
+        .genre-menu {
+            justify-content: flex-start;
+            gap: 10px;
+            height: 54px;
+        }
+
+        .genre-btn {
+            padding: 8px 14px;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            color: #c8d0dc;
+            font-size: 13px;
+        }
+
+        .genre-btn:hover,
+        .genre-btn.active {
+            color: var(--ink);
+            background: var(--lime);
+            font-weight: 700;
+        }
+
+        main {
+            max-width: 1340px;
+            padding: 48px 24px 70px;
+        }
+
+        .section {
+            margin-bottom: 62px;
+        }
+
+        .section-heading {
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            color: var(--ink);
+            font-size: 30px;
+        }
+
+        .section-heading p,
+        .book-author {
+            color: var(--muted);
+        }
+
+        .book-grid {
+            gap: 34px 22px;
+        }
+
+        .cover-wrapper {
+            border-radius: 8px;
+            background: #eee9df;
+            box-shadow: 7px 7px 0 #d8c9a9;
+        }
+
+        .book-card:hover .cover-wrapper {
+            box-shadow: 10px 12px 0 var(--sky);
+        }
+
+        .book-title {
+            color: var(--ink);
+            font-size: 17px;
+        }
+
+        .page-btn {
+            border-color: var(--ink);
+            border-radius: 7px;
+            color: var(--ink);
+        }
+
+        .site-disclaimer {
+            margin: 0 auto;
+            padding: 26px 24px 34px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .hero {
+            display: grid;
+            place-items: center;
+            max-width: 1340px;
+            min-height: 230px;
+            margin: 38px auto 0;
+            padding: 42px 30px;
+            border: 1px solid #ddd6c9;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 10px 10px 0 var(--sky);
+            text-align: center;
+        }
+
+        .reader-quote {
+            max-width: 780px;
+            margin: 0;
+            color: var(--ink);
+            font-family: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
+            font-size: clamp(28px, 4vw, 52px);
+            line-height: 1.15;
+            transform: rotate(-1deg);
+        }
+
+        .reader-quote cite {
+            display: block;
+            margin-top: 18px;
+            color: var(--coral);
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .reader-shell[hidden] {
+            display: none;
+        }
+
+        .reader-shell {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            background: var(--paper);
+        }
+
+        .reader-panel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-height: none;
+            overflow: auto;
+            padding: clamp(28px, 6vw, 80px);
+            border-radius: 0;
+            background: var(--paper);
+        }
+
+        .reader-close {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 50%;
+            background: var(--ink);
+            color: white;
+            cursor: pointer;
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .reader-layout {
+            display: grid;
+            grid-template-columns: minmax(170px, 250px) minmax(0, 720px);
+            gap: clamp(28px, 6vw, 90px);
+            align-items: start;
+            justify-content: center;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding-top: 30px;
+        }
+
+        .reader-cover {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 8px 8px 0 var(--sky);
+        }
+
+        .reader-page {
+            padding: 18px 8px 8px;
+        }
+
+        .reader-label {
+            color: var(--coral);
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .reader-page h2 {
+            margin-top: 10px;
+            color: var(--ink);
+            font-size: 38px;
+            line-height: 1.05;
+        }
+
+        .reader-author {
+            margin-top: 8px;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        .reader-description {
+            margin-top: 18px;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .reader-chapter {
+            margin-top: 28px;
+            color: var(--coral);
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .reader-content {
+            min-height: 300px;
+            margin-top: 36px;
+            color: #384353;
+            font-size: clamp(20px, 2vw, 27px);
+            line-height: 1.8;
+        }
+
+        .reader-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+        }
+
+        .reader-page-number {
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        .reader-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .reader-controls button {
+            padding: 9px 12px;
+            border: 1px solid var(--ink);
+            border-radius: 6px;
+            background: white;
+            color: var(--ink);
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        @media (max-width: 650px) {
+            .reader-shell {
+                padding: 0;
+            }
+
+            .reader-panel {
+                padding: 22px;
+            }
+
+            .reader-layout {
+                grid-template-columns: 100px minmax(0, 1fr);
+                gap: 20px;
+            }
+
+            .reader-page h2 {
+                font-size: 26px;
+            }
+
+            .reader-content {
+                min-height: 260px;
+                margin-top: 24px;
+                font-size: 18px;
+            }
+
+            .reader-footer {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .header {
+                padding: 16px 20px;
+            }
+
+            main {
+                padding: 34px 20px 60px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .hero {
+                min-height: 190px;
+                margin: 24px 16px 0;
+                padding: 30px 20px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ==============================
+         HEADER
+    ============================== -->
+
+    <header class="header">
+
+        <!-- LITLY — TOP LEFT -->
+        <div class="logo">LITLY</div>
+
+        <!-- SEARCH — TOP RIGHT -->
+        <div class="search-box">
+            <span>⌕</span>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search books or authors..."
+                autocomplete="off"
+            >
+        </div>
+
+    </header>
+
+
+    <!-- ==============================
+         GENRE MENU
+    ============================== -->
+
+    <nav class="genre-bar">
+
+        <div class="genre-menu">
+
+            <button class="genre-btn active" onclick="filterGenre('All', this)">
+                All
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Romance', this)">
+                Romance
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Thriller', this)">
+                Thriller
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Horror', this)">
+                Horror
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Mystery', this)">
+                Mystery
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Fantasy', this)">
+                Fantasy
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Sci-Fi', this)">
+                Sci-Fi
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Drama', this)">
+                Drama
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Adventure', this)">
+                Adventure
+            </button>
+
+            <button class="genre-btn" onclick="filterGenre('Classics', this)">
+                Classics
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <section class="hero" aria-label="A note for readers">
+        <blockquote class="reader-quote">
+            Some stories do not end when the page does; they follow you home.
+            <cite>A note for readers</cite>
+        </blockquote>
+    </section>
+
+    <!-- ==============================
+         MAIN
+    ============================== -->
+
+    <main>
+
+        <!-- SEARCH RESULTS -->
+        <section class="section" id="searchSection">
+
+            <div class="section-heading">
+                <h2>Search Results</h2>
+                <p id="searchCount"></p>
+            </div>
+
+            <div class="book-grid" id="searchGrid"></div>
+
+        </section>
+
+        <section class="section" id="shelfSection" hidden>
+            <div class="section-heading">
+                <h2>Your Shelf</h2>
+                <p>Saved for later</p>
+            </div>
+            <div class="book-grid" id="shelfGrid"></div>
+        </section>
+
+
+        <!-- TRENDING -->
+        <section class="section" id="trendingSection">
+
+            <div class="section-heading">
+                <h2>Trending</h2>
+                <p>Most read on LITLY</p>
+            </div>
+
+            <div class="book-grid" id="trendingGrid"></div>
+
+        </section>
+
+
+        <!-- RECENTLY ADDED -->
+        <section class="section" id="recentSection">
+
+            <div class="section-heading">
+                <h2>Recently Added</h2>
+                <p>Fresh stories on LITLY</p>
+            </div>
+
+            <div class="book-grid" id="recentGrid"></div>
+
+        </section>
+
+
+        <!-- TOP RATED -->
+        <section class="section" id="ratedSection">
+
+            <div class="section-heading">
+                <h2>Top Rated</h2>
+                <p>Loved by readers</p>
+            </div>
+
+            <div class="book-grid" id="ratedGrid"></div>
+
+        </section>
+
+
+        <!-- ALL BOOKS -->
+        <section class="section" id="allSection">
+
+            <div class="section-heading">
+                <h2 id="allHeading">All Books</h2>
+                <p id="pageInfo"></p>
+            </div>
+
+            <div class="book-grid" id="allGrid"></div>
+
+            <div class="pagination" id="pagination">
+
+                <button class="page-btn" onclick="previousPage()">
+                    ← Previous
+                </button>
+
+                <span class="page-number" id="pageNumber">
+                    Page 1
+                </span>
+
+                <button class="page-btn" onclick="nextPage()">
+                    Next →
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <div class="reader-shell" id="readerShell" role="dialog" aria-modal="true" aria-labelledby="readerTitle" hidden>
+        <div class="reader-panel">
+            <button class="reader-close" type="button" onclick="closeReader()" aria-label="Close reader">&times;</button>
+            <div class="reader-layout">
+                <img class="reader-cover" id="readerCover" alt="">
+                <article class="reader-page">
+                    <div class="reader-label">Now reading</div>
+                    <h2 id="readerTitle"></h2>
+                    <div class="reader-author" id="readerAuthor"></div>
+                    <p class="reader-description" id="readerDescription"></p>
+                    <div class="reader-chapter" id="readerChapter"></div>
+                    <div class="reader-content" id="readerContent"></div>
+                    <div class="reader-footer">
+                        <span class="reader-page-number" id="readerPageNumber"></span>
+                        <div class="reader-controls">
+                            <button type="button" onclick="changeReaderFont(-1)" aria-label="Decrease text size">A-</button>
+                            <button type="button" onclick="changeReaderFont(1)" aria-label="Increase text size">A+</button>
+                            <button type="button" onclick="previousReaderPage()">Previous</button>
+                            <button type="button" onclick="nextReaderPage()">Next</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-disclaimer">
+        This website displays books collected from the internet and is not responsible for anything.
+    </footer>
+
+
+    <script src="books.js"></script>
+    <script>
+
+        const books = Array.isArray(window.LITLY_BOOKS)
+            ? window.LITLY_BOOKS
+            : [];
+
+        const storage = {
+            get(key, fallback = null) {
+                try {
+                    return localStorage.getItem(key) ?? fallback;
+                } catch (error) {
+                    return fallback;
+                }
+            },
+            set(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                } catch (error) {
+                }
+            }
+        };
+
+        /* =====================================
+           STATE
+        ===================================== */
+
+        let currentGenre = "All";
+        let currentPage = 1;
+
+        const booksPerPage = 16;
+
+
+        /* =====================================
+           BOOK CARD
+        ===================================== */
+
+        function escapeHTML(value) {
+            return String(value ?? "").replace(/[&<>'"]/g, character => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "'": "&#39;",
+                "\"": "&quot;"
+            })[character]);
+        }
+
+        function createBookCard(book) {
+
+            const favouriteKey = "litly_favourite_" + book.id;
+            const bookmarkKey = "litly_bookmark_" + book.id;
+
+            const favourite = storage.get(favouriteKey) === "true";
+
+            const bookmark = storage.get(bookmarkKey) === "true";
+
+            return `
+
+                <article class="book-card"
+                    onclick="openBook(${book.id})">
+
+                    <div class="cover-wrapper">
+
+                        <img
+                            src="${escapeHTML(book.image)}"
+                            alt="${escapeHTML(book.title)} cover"
+                            loading="lazy"
+                        >
+
+                        <div
+                            class="book-actions"
+                            onclick="event.stopPropagation()"
+                        >
+
+                            <button
+                                class="action-btn ${bookmark ? "active" : ""}"
+                                onclick="toggleBookmark(${book.id})"
+                                title="Bookmark"
+                            >
+                                🔖
+                            </button>
+
+                            <button
+                                class="action-btn ${favourite ? "active" : ""}"
+                                onclick="toggleFavourite(${book.id})"
+                                title="Favourite"
+                            >
+                                ♥
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="book-info">
+
+                        <div class="book-title">
+                            ${escapeHTML(book.title)}
+                        </div>
+
+                        <div class="book-author">
+                            ${escapeHTML(book.author)}
+                        </div>
+
+                    </div>
+
+                </article>
+
+            `;
+        }
+
+
+        /* =====================================
+           TRENDING
+        ===================================== */
+
+        function renderTrending() {
+
+            const trending = [...books]
+                .sort((a, b) => b.reads - a.reads)
+                .slice(0, 10);
+
+            document.getElementById("trendingGrid").innerHTML =
+                trending.map(createBookCard).join("");
+        }
+
+
+        /* =====================================
+           RECENTLY ADDED
+        ===================================== */
+
+        function renderRecent() {
+
+            const recent = [...books]
+                .sort((a, b) => b.date - a.date)
+                .slice(0, 10);
+
+            document.getElementById("recentGrid").innerHTML =
+                recent.map(createBookCard).join("");
+        }
+
+
+        /* =====================================
+           TOP RATED
+        ===================================== */
+
+        function renderRated() {
+
+            const rated = [...books]
+                .sort((a, b) => b.rating - a.rating)
+                .slice(0, 10);
+
+            document.getElementById("ratedGrid").innerHTML =
+                rated.map(createBookCard).join("");
+        }
+
+
+        /* =====================================
+           ALL BOOKS + PAGINATION
+        ===================================== */
+
+        function renderAllBooks() {
+
+            let filtered = books;
+
+            if (currentGenre !== "All") {
+
+                filtered = books.filter(
+                    book => book.genre === currentGenre
+                );
+
+            }
+
+            const totalPages =
+                Math.max(1, Math.ceil(filtered.length / booksPerPage));
+
+            if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+
+            const start =
+                (currentPage - 1) * booksPerPage;
+
+            const end =
+                start + booksPerPage;
+
+            const pageBooks =
+                filtered.slice(start, end);
+
+            const grid =
+                document.getElementById("allGrid");
+
+            if (pageBooks.length === 0) {
+
+                grid.innerHTML = `
+                    <div class="empty-message">
+                        No books found in this category.
+                    </div>
+                `;
+
+            } else {
+
+                grid.innerHTML =
+                    pageBooks.map(createBookCard).join("");
+
+            }
+
+            document.getElementById("pageNumber").textContent =
+                `Page ${currentPage} of ${totalPages}`;
+
+            document.getElementById("pageInfo").textContent =
+                `${filtered.length} books`;
+
+            document.getElementById("allHeading").textContent =
+                currentGenre === "All" ? "All Books" : `${currentGenre} Books`;
+
+            document.getElementById("pagination").style.display =
+                currentGenre !== "All" && totalPages > 1 ? "flex" : "none";
+        }
+
+        function renderShelf() {
+            const savedBooks = books.filter(book =>
+                storage.get(`litly_bookmark_${book.id}`) === "true" ||
+                storage.get(`litly_favourite_${book.id}`) === "true"
+            );
+            const shelfSection = document.getElementById("shelfSection");
+
+            shelfSection.hidden = savedBooks.length === 0;
+            document.getElementById("shelfGrid").innerHTML =
+                savedBooks.map(createBookCard).join("");
+        }
+
+
+        /* =====================================
+           GENRE FILTER
+        ===================================== */
+
+        function filterGenre(genre, button) {
+
+            currentGenre = genre;
+            currentPage = 1;
+
+            document.querySelectorAll(".genre-btn")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            document.getElementById("searchSection").style.display =
+                "none";
+
+            document.getElementById("trendingSection").style.display =
+                genre === "All" ? "block" : "none";
+
+            document.getElementById("recentSection").style.display =
+                genre === "All" ? "block" : "none";
+
+            document.getElementById("ratedSection").style.display =
+                genre === "All" ? "block" : "none";
+
+            renderAllBooks();
+        }
+
+
+        /* =====================================
+           PAGINATION
+        ===================================== */
+
+        function nextPage() {
+
+            let filtered =
+                currentGenre === "All"
+                    ? books
+                    : books.filter(
+                        book => book.genre === currentGenre
+                    );
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(filtered.length / booksPerPage)
+                );
+
+            if (currentPage < totalPages) {
+
+                currentPage++;
+                renderAllBooks();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+
+        function previousPage() {
+
+            if (currentPage > 1) {
+
+                currentPage--;
+                renderAllBooks();
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+
+        /* =====================================
+           SEARCH
+        ===================================== */
+
+        document.getElementById("searchInput")
+            .addEventListener("input", function () {
+
+                const query =
+                    this.value.trim().toLowerCase();
+
+                const searchSection =
+                    document.getElementById("searchSection");
+
+                if (!query) {
+
+                    searchSection.style.display = "none";
+
+                    document.getElementById("trendingSection")
+                        .style.display =
+                        currentGenre === "All" ? "block" : "none";
+
+                    document.getElementById("recentSection")
+                        .style.display =
+                        currentGenre === "All" ? "block" : "none";
+
+                    document.getElementById("ratedSection")
+                        .style.display =
+                        currentGenre === "All" ? "block" : "none";
+
+                    return;
+                }
+
+                searchSection.style.display = "block";
+
+                document.getElementById("trendingSection")
+                    .style.display = "none";
+
+                document.getElementById("recentSection")
+                    .style.display = "none";
+
+                document.getElementById("ratedSection")
+                    .style.display = "none";
+
+                const results =
+                    books.filter(book =>
+                        book.title.toLowerCase().includes(query) ||
+                        book.author.toLowerCase().includes(query) ||
+                        book.genre.toLowerCase().includes(query) ||
+                        (book.description || "").toLowerCase().includes(query)
+                    );
+
+                document.getElementById("searchCount").textContent =
+                    `${results.length} result${results.length === 1 ? "" : "s"}`;
+
+                const grid =
+                    document.getElementById("searchGrid");
+
+                if (results.length === 0) {
+
+                    grid.innerHTML = `
+                        <div class="empty-message">
+                            No books found.
+                        </div>
+                    `;
+
+                } else {
+
+                    grid.innerHTML =
+                        results.map(createBookCard).join("");
+
+                }
+
+            });
+
+
+        /* =====================================
+           BOOKMARK
+        ===================================== */
+
+        function toggleBookmark(id) {
+
+            const key = "litly_bookmark_" + id;
+
+            const current = storage.get(key) === "true";
+
+            storage.set(key, !current);
+
+            refresh();
+        }
+
+
+        /* =====================================
+           FAVOURITE
+        ===================================== */
+
+        function toggleFavourite(id) {
+
+            const key = "litly_favourite_" + id;
+
+            const current = storage.get(key) === "true";
+
+            storage.set(key, !current);
+
+            refresh();
+        }
+
+
+        /* =====================================
+           OPEN BOOK
+        ===================================== */
+
+        let readerPages = [];
+        let readerPageIndex = 0;
+        let readerChapters = [];
+        let readerFontSize = Number(storage.get("litly_reader_font")) || 20;
+        let activeReaderBookId = null;
+
+        function openBook(id) {
+
+            const book =
+                books.find(book => book.id === id);
+
+            if (!book) return;
+
+            readerChapters = book.chapters || [{
+                title: "Reading copy",
+                pages: book.pages || [
+                `Every story begins with a first page. Welcome to ${book.title}, by ${book.author}.`,
+                "This is your reading space. Replace these starter pages with the chapters of your book when the manuscript is ready.",
+                "Turn the page when you are ready to continue. Your next chapter starts here."
+                ]
+            }];
+            readerPages = readerChapters.flatMap(chapter => chapter.pages);
+            activeReaderBookId = book.id;
+            readerPageIndex = Number(storage.get(`litly_progress_${book.id}`)) || 0;
+            readerPageIndex = Math.min(readerPageIndex, readerPages.length - 1);
+
+            document.getElementById("readerCover").src = book.image;
+            document.getElementById("readerCover").alt = `${book.title} cover`;
+            document.getElementById("readerTitle").textContent = book.title;
+            document.getElementById("readerAuthor").textContent = `By ${book.author}`;
+            document.getElementById("readerDescription").textContent = book.description || "";
+            document.getElementById("readerShell").hidden = false;
+            document.body.style.overflow = "hidden";
+            renderReaderPage();
+        }
+
+        function renderReaderPage() {
+            document.getElementById("readerContent").textContent =
+                readerPages[readerPageIndex];
+            document.getElementById("readerContent").style.fontSize = `${readerFontSize}px`;
+            let pageOffset = 0;
+            let chapterTitle = readerChapters[0]?.title || "Reading copy";
+            for (const chapter of readerChapters) {
+                if (readerPageIndex >= pageOffset && readerPageIndex < pageOffset + chapter.pages.length) {
+                    chapterTitle = chapter.title;
+                    break;
+                }
+                pageOffset += chapter.pages.length;
+            }
+            document.getElementById("readerChapter").textContent = chapterTitle;
+            document.getElementById("readerPageNumber").textContent =
+                `Page ${readerPageIndex + 1} of ${readerPages.length}`;
+            if (activeReaderBookId) {
+                storage.set(`litly_progress_${activeReaderBookId}`, readerPageIndex);
+            }
+        }
+
+        function changeReaderFont(step) {
+            readerFontSize = Math.max(16, Math.min(32, readerFontSize + step * 2));
+            storage.set("litly_reader_font", readerFontSize);
+            renderReaderPage();
+        }
+
+        function nextReaderPage() {
+            if (readerPageIndex < readerPages.length - 1) {
+                readerPageIndex++;
+                renderReaderPage();
+            }
+        }
+
+        function previousReaderPage() {
+            if (readerPageIndex > 0) {
+                readerPageIndex--;
+                renderReaderPage();
+            }
+        }
+
+        function closeReader() {
+            document.getElementById("readerShell").hidden = true;
+            document.body.style.overflow = "";
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") closeReader();
+        });
+
+
+
+        /* =====================================
+           REFRESH EVERYTHING
+        ===================================== */
+
+        function refresh() {
+
+            renderTrending();
+            renderRecent();
+            renderRated();
+            renderAllBooks();
+            renderShelf();
+
+        }
+
+        /* =====================================
+           INITIAL LOAD
+        ===================================== */
+
+        refresh();
+
+    </script>
+
+</body>
+</html>
